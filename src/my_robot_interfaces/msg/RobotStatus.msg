@@ -1,0 +1,3 @@
+int32 battery_level
+float64 motor_temperature
+string operational_status

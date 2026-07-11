@@ -1,0 +1,4 @@
+string targeted_mode
+---
+bool success
+string message

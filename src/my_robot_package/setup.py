@@ -39,7 +39,9 @@ setup(
             "robot_safety_client_exe = my_robot_package.safety_client_node:main",
             "area_navigation_action_server_exe = my_robot_package.area_navigation_server:main",
             "emergency_brake_vel_pub_exe = my_robot_package.emergency_brake:main",
-            "pose_tracking_sub_exe = my_robot_package.pose_subscriber:main"
+            "pose_tracking_sub_exe = my_robot_package.pose_subscriber:main",
+            "lidar_fake_node_exe = my_robot_package.lidar_pub_node:main",
+            "lidar_watchdog_node_exe = my_robot_package.lidar_sub_watchdog:main"
         ],
     },
 )

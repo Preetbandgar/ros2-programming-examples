@@ -16,7 +16,7 @@ class FakeLidarSubscriber(Node):
         reading = msg.ranges[middle_index]
 
         if reading < 1.0:
-            self.get_logger().warning(f"[Warning]:'The distance {reading: .1f} m is less than 1.0 m")
+            self.get_logger().warning(f"'Obstacle detected: {reading: .1f} m is less than 1.0 m")
 
 
 def main(args=None):

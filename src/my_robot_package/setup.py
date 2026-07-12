@@ -41,7 +41,8 @@ setup(
             "emergency_brake_vel_pub_exe = my_robot_package.emergency_brake:main",
             "pose_tracking_sub_exe = my_robot_package.pose_subscriber:main",
             "lidar_fake_node_exe = my_robot_package.lidar_pub_node:main",
-            "lidar_watchdog_node_exe = my_robot_package.lidar_sub_watchdog:main"
+            "lidar_watchdog_node_exe = my_robot_package.lidar_sub_watchdog:main",
+            "robot_imu_monitor_exe = my_robot_package.imu_monitor:main"
         ],
     },
 )

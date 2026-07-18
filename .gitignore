@@ -15,3 +15,11 @@ __pycache__/
 # Linux
 .DS_Store
 *.swp
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Docker-related directories
+.devcontainer/
+docker/

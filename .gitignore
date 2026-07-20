@@ -1,25 +1,26 @@
-# ROS2 build artifacts
+# Python
+__pycache__/
+*.pyc
+*.py[cod]
+
+# ROS2
 build/
 install/
 log/
 
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
+# VS Code
+.vscode/
 
 # IDE
-.vscode/
 .idea/
 
-# Linux
+# OS
 .DS_Store
-*.swp
+Thumbs.db
 
-# Docker
-Dockerfile
-.dockerignore
+# Environment
+.env
+.venv/
 
-# Docker-related directories
-.devcontainer/
-docker/
+# Docker (only generated artifacts if any)
+*.tar

@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': ['imu_tilt_guard_exe = robot_bringup_sensors.imu_tilt_guard:main',
+                            'sensor_power_switch_exe = robot_bringup_sensors.sensor_power_switch:main',
         ],
     },
 )

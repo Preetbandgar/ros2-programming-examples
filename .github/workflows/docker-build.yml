@@ -1,0 +1,74 @@
+name: Docker Build & Publish
+'on':
+  push:
+    branches:
+      - main
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - docker/**
+      - .github/workflows/docker-build.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - docker/**
+      - .github/workflows/docker-build.yml
+jobs:
+  docker-build-test-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          load: true
+          push: false
+          tags: 'preetbandgar/ros2-jazzy-dev:latest'
+      - name: Verify Docker Environment
+        run: |
+          docker run --rm \
+            preetbandgar/ros2-jazzy-dev:latest \
+            bash -c "
+              whoami &&
+              pwd &&
+              echo \$ROS_DISTRO &&
+              ros2 --help >/dev/null &&
+              colcon --help >/dev/null &&
+              python3 --version
+            "
+      - name: Build ROS Workspace
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/home/ubuntu/ros2-programming-examples \
+            -w /home/ubuntu/ros2-programming-examples \
+            preetbandgar/ros2-jazzy-dev:latest \
+            bash -c "
+              rm -rf build install log &&
+              colcon build
+            "
+      - name: Login to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: '${{ secrets.DOCKERHUB_USERNAME }}'
+          password: '${{ secrets.DOCKERHUB_TOKEN }}'
+      - name: Push Docker Image
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            preetbandgar/ros2-jazzy-dev:latest
+            preetbandgar/ros2-jazzy-dev:${{ github.sha }}

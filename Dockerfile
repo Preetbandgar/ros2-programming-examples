@@ -1,54 +1,56 @@
-# --- STAGE 1: BUILD ENVIRONMENT ---
-FROM ros:jazzy-ros-base AS builder
+# ROS 2 Jazzy Development Environment
+FROM ros:jazzy-ros-base
+
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system build dependencies
+# --------------------------------------------------
+# Install development tools
+# --------------------------------------------------
 RUN apt-get update && apt-get install -y \
+    sudo \
+    git \
+    curl \
+    wget \
+    vim \
+    nano \
+    tree \
+    python3-pip \
     python3-colcon-common-extensions \
-    ros-jazzy-rosidl-default-generators \
+    python3-rosdep \
+    python3-vcstool \
+    python3-argcomplete \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /ros2_ws
+# --------------------------------------------------
+# Initialize rosdep
+# --------------------------------------------------
+RUN rosdep init || true
+RUN rosdep update
 
-# Copy your exact src directory layout
-COPY ./src ./src
+# --------------------------------------------------
+# Configure ubuntu user
+# --------------------------------------------------
+RUN usermod -aG sudo ubuntu && \
+    echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/ubuntu && \
+    chmod 0440 /etc/sudoers.d/ubuntu
 
-# Initialize rosdep, update database, and install required system/ROS dependencies
-RUN rosdep update && \
-    apt-get update && \
-    rosdep install --from-paths src --ignore-src -y -r && \
-    rm -rf /var/lib/apt/lists/*
+# Create workspace as root
+RUN mkdir -p /home/ubuntu/ros2-programming-examples/src && \
+    chown -R ubuntu:ubuntu /home/ubuntu/ros2-programming-examples
 
-# Build your custom messages package first, then build your python nodes
-RUN . /opt/ros/jazzy/setup.sh && \
-    colcon build --merge-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+# Copy entrypoint
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# --- STAGE 2: PRODUCTION RUNTIME ---
-FROM ros:jazzy-ros-base AS runner
-ENV DEBIAN_FRONTEND=noninteractive
+# Switch to ubuntu user
+USER ubuntu
 
-# Create a secure corporate non-root user
-ARG USERNAME=robot_operator
-ARG USER_UID=1042
-ARG USER_GID=1042
+WORKDIR /home/ubuntu/ros2-programming-examples
 
-RUN groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && apt-get update && apt-get install -y sudo \
-    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME \
-    && rm -rf /var/lib/apt/lists/*
+# Source ROS automatically
+RUN echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc
 
-USER $USERNAME
-WORKDIR /home/$USERNAME/robot_app
+ENTRYPOINT ["/entrypoint.sh"]
 
-# Copy ONLY compiled artifacts from build stage to minimize final runtime size
-COPY --from=builder /ros2_ws/install ./install
-
-# Automatically source ROS2 and your custom workspace for the operator
-RUN echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc && \
-    echo "source /home/$USERNAME/robot_app/install/setup.bash" >> ~/.bashrc
-
-# Default fallback command (Overridden by your launch scripts or runtime configurations)
 CMD ["bash"]
-

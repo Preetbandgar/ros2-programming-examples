@@ -33,7 +33,7 @@ jobs:
           file: ./Dockerfile
           load: true
           push: false
-          tags: 'preetbandgar/ros2-jazzy-dev:latest'
+          tags: 'preeet/ros2-jazzy-dev:latest'
       - name: Verify Docker Environment
         run: |
           docker run --rm \
@@ -60,6 +60,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            preetbandgar/ros2-jazzy-dev:latest
-            preetbandgar/ros2-jazzy-dev:${{ github.sha }}
-            
+            preeet/ros2-jazzy-dev:latest
+            preeet/ros2-jazzy-dev:${{ github.sha }}

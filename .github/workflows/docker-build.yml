@@ -46,18 +46,6 @@ jobs:
               colcon --help >/dev/null &&
               python3 --version
             "
-      - name: Build ROS Workspace
-        run: |
-          docker run --rm \
-            --user $(id -u):$(id -g) \
-            -v ${{ github.workspace }}:/home/ubuntu/ros2-programming-examples \
-            -w /home/ubuntu/ros2-programming-examples \
-            preetbandgar/ros2-jazzy-dev:latest \
-            bash -c "
-              source /opt/ros/jazzy/setup.bash &&
-              rm -rf build install log &&
-              colcon build
-            "
       - name: Login to Docker Hub
         if: github.ref == 'refs/heads/main'
         uses: docker/login-action@v3

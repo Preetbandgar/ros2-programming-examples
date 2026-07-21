@@ -1,13 +1,16 @@
 # ROS2 Development Workspace
 
+[![Docker Build & Publish](https://github.com/Preetbandgar/ros2-programming-examples/actions/workflows/docker-build.yml/badge.svg)](https://github.com/Preetbandgar/ros2-programming-examples/actions/workflows/docker-build.yml)
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-preeet%2Fros2--jazzy--dev-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/r/preeet/ros2-jazzy-dev)
+
 ![ROS 2](https://img.shields.io/badge/ROS%202-Jazzy-22314E)
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-Linux-E95420)
 ![Status](https://img.shields.io/badge/Status-Active%20Development-brightgreen)
 
-Active ROS 2 engineering workspace for building modular robotics software examples with Python (`rclpy`).
+Active ROS 2 engineering workspace for building modular robotics software examples with Python (`rclpy`), backed by an automated Docker-based CI pipeline and Docker Hub image publishing.
 
-The workspace demonstrates ROS 2 package organization, publishers, subscribers, services, actions, custom interfaces, parameters, and logging. It is intentionally evolving with my ROS 2 learning path.
+The workspace demonstrates ROS 2 package organization, publishers, subscribers, services, actions, custom interfaces, parameters, logging, and development best practices. It is intentionally evolving with my ROS 2 learning path.
 
 ## Current Progress
 

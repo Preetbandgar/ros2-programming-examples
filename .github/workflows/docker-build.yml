@@ -37,7 +37,7 @@ jobs:
       - name: Verify Docker Environment
         run: |
           docker run --rm \
-            preetbandgar/ros2-jazzy-dev:latest \
+            preeet/ros2-jazzy-dev:latest \
             bash -c "
               whoami &&
               pwd &&

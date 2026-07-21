@@ -49,10 +49,12 @@ jobs:
       - name: Build ROS Workspace
         run: |
           docker run --rm \
+            --user $(id -u):$(id -g) \
             -v ${{ github.workspace }}:/home/ubuntu/ros2-programming-examples \
             -w /home/ubuntu/ros2-programming-examples \
             preetbandgar/ros2-jazzy-dev:latest \
             bash -c "
+              source /opt/ros/jazzy/setup.bash &&
               rm -rf build install log &&
               colcon build
             "

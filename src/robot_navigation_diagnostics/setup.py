@@ -25,6 +25,7 @@ setup(
     entry_points={
         'console_scripts': ["position_tracker_exe = robot_navigation_diagnostics.position_tracker:main",
                             "navigation_safety_checker_exe = robot_navigation_diagnostics.nav_safety_checker:main",
+                            "goal_marker_publisher_exe = robot_navigation_diagnostics.goal_marker_publisher:main",
         ],
     },
 )
